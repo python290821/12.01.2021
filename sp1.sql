@@ -39,25 +39,36 @@ language plpgsql AS
 select * from sp_product(2.2, 3.5);
 
 -- create table movies
--- title, release_date, price
+-- title, release_date, price, country_id
 -- text, timestamp, double precision
+-- create table countries
 
+-- create table countries
+-- (
+--     id   bigserial not null
+--         constraint countries_pk
+--             primary key,
+--     name text      not null
+-- )
 -- create table movies
 -- (
 --     id           bigserial                  not null
 --         constraint movies_pk
 --             primary key,
---     title        text                       not null,
+--     title        text,
 --     release_date timestamp                  not null,
---     price        double precision default 0 not null
+--     price        double precision default 0 not null,
+--     country_id   bigint
+--         constraint movies_countries_id_fk
+--             references countries
 -- );
 
---insert into movies (title, release_date, price)
---values ('batman returns', '2020-12-16 20:21:00', 45.5);
--- insert into movies (title, release_date, price)
--- values ('wonder woman', '2018-07-11 08:12:11', 125.5);
--- insert into movies (title, release_date, price)
--- values ('matrix resurrection', '2021-01-03 09:10:11', 38.7);
+insert into movies (title, release_date, price)
+values ('batman returns', '2020-12-16 20:21:00', 45.5);
+insert into movies (title, release_date, price)
+values ('wonder woman', '2018-07-11 08:12:11', 125.5);
+insert into movies (title, release_date, price)
+values ('matrix resurrection', '2021-01-03 09:10:11', 38.7);
 
 drop function sp_movies_stat;
 CREATE or replace function sp_movies_stat(out min_price double precision,
@@ -73,3 +84,7 @@ language plpgsql AS
     $$;
 
 select * from sp_movies_stat();
+
+-- targil:
+-- 1. create sp returns name of the most expansive movie
+-- 2. create sp_num_of_movies return the number of movies
