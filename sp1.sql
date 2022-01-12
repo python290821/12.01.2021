@@ -133,6 +133,7 @@ language plpgsql AS
 select * from sp_count_movies_and_countries();
 
 drop function sp_insert_movie;
+-- each parameter starts with _ (i.e. _title) to avoid ambiguity with the table columns
 CREATE or replace function sp_insert_movie(_title text, _release_date timestamp,
     _price double precision, _country_id bigint)
     returns bigint
@@ -145,7 +146,7 @@ language plpgsql AS
             values (_title, _release_date, _price, _country_id)
             returning id into new_id;
 
-            return new_id;
+            return new_id; -- returning the id of the newly created record
         end;
     $$;
 
@@ -156,4 +157,39 @@ select * from sp_insert_movie('Eternals', cast('2020-05-21' as timestamp)
 
 -- sp_update_movie (movie_details, _id => update ) return 0
 -- execute func
--- etgar:* write it without return value
+-- *etgar: write it without return value
+-- sp_get_movies_in_range(_min, _max) => count number of movies
+
+drop function sp_update_movie;
+-- procedure does not return a value
+CREATE or replace procedure sp_update_movie(_title text, _release_date timestamp,
+    _price double precision, _country_id bigint, _update_id bigint)
+language plpgsql AS
+    $$
+        BEGIN
+            UPDATE movies
+            set title = _title, release_date = _release_date,
+                price = _price, country_id = _country_id
+            where id = _update_id;
+        end;
+    $$;
+
+call sp_update_movie('Queen gambit 2', cast('2020-08-12' as timestamp)
+    , 87.1, 3, 5);
+
+drop function sp_get_movies_in_range;
+-- procedure does not return a value
+CREATE or replace function  sp_get_movies_in_range(_min double precision, _max double precision)
+returns TABLE(id bigint, title text, release_date timestamp,
+    price double precision, country_id bigint, country_name text)
+language plpgsql AS
+    $$
+        BEGIN
+            return QUERY
+            select m.id, m.title, m.release_date, m.price, m.country_id, c.name from movies m
+            join countries c on m.country_id = c.id
+            where m.price between _min and _max;
+        end;
+    $$;
+
+select * from sp_get_movies_in_range(100, 150) order by release_date;
