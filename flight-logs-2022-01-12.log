@@ -1,0 +1,9 @@
+2022-01-12 18:22:00.666361 CRITICAL wrong input for int
+2022-01-12 18:22:31.793502 CRITICAL wrong input for int
+2022-01-12 18:23:09.410665 INFO starting facade ....
+2022-01-12 18:23:09.410665 DEBUG input x about to happen
+2022-01-12 18:23:10.139430 CRITICAL wrong input for int
+2022-01-12 18:27:04.392791 INFO starting facade ....
+2022-01-12 18:27:10.282173 CRITICAL wrong input for int
+2022-01-12 18:35:47.205741 INFO starting facade ....
+2022-01-12 18:35:51.051215 CRITICAL wrong input for int
