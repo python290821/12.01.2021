@@ -178,8 +178,7 @@ call sp_update_movie('Queen gambit 2', cast('2020-08-12' as timestamp)
     , 87.1, 3, 5);
 
 drop function sp_get_movies_in_range;
--- procedure does not return a value
-CREATE or replace function  sp_get_movies_in_range(_min double precision, _max double precision)
+CREATE or replace function sp_get_movies_in_range(_min double precision, _max double precision)
 returns TABLE(id bigint, title text, release_date timestamp,
     price double precision, country_id bigint, country_name text)
 language plpgsql AS
